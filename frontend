@@ -1,2 +1,25 @@
+#!/bin/bash
+#  we are using centos operating system to verify os version we are installing another package based on condition it will execute next commands
+# to get os version
+# Install  redhat-lsb-core package
+sudo yum install redhat-lsb-core -y
+# Get the operating system version
+os_version=$(lsb_release -d)
 
-#################This script will help you to install frontend nginix related packages##########
+# Check if the OS version contains a specific pattern
+if [[ $os_version == *"8"* ]]; then
+  # Run the command for Centos 8
+  echo "Running command for Centos 8"
+  yum update -y
+  yum install nginx -y
+  systemctl enable nginx
+  systemctl start nginx
+  rm -rf /usr/share/nginx/html/*
+  curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend.zip
+  cd /usr/share/nginx/html
+  unzip /tmp/frontend.zip
+  touch /etc/nginx/default.d/roboshop.conf
+else
+  # OS version not supported
+  echo "Unsupported operating system version: $os_version"
+fi
