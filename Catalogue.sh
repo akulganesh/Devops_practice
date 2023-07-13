@@ -22,6 +22,7 @@ curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue
 unzip /tmp/catalogue.zip
 #Lets download the dependencies.
 npm install
+#creating catalogue.service
 cat > /etc/systemd/system/catalogue.service <<- "EOF"
 [Unit]
 Description = Catalogue Service
@@ -41,7 +42,6 @@ systemctl daemon-reload
 #Start the service.
 systemctl enable catalogue
 systemctl start catalogue
-
 #setup MongoDB repo and install mongodb-client
 cat > /etc/yum.repos.d/mongo.repo <<- "EOF"
 [mongodb-org-4.2]

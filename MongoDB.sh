@@ -5,12 +5,10 @@
 sudo yum install redhat-lsb-core -y
 # Get the operating system version
 os_version=$(lsb_release -d)
-
 # Check if the OS version contains a specific pattern
 if [[ $os_version == *"8"* ]]; then
   # Run the command for Centos 8
   echo "Running command for Centos 8"
-
 cat > /etc/yum.repos.d/mongo.repo <<- "EOF"
 [mongodb-org-4.2]
 name=MongoDB Repository
@@ -24,16 +22,10 @@ yum install mongodb-org -y
 # Start & Enable MongoDB Service
 systemctl enable mongod
 systemctl start mongod
-# File path
-file="/etc/mongod.conf"
-
-# String to search for
-search="127.0.0.1"
-
-# String to replace with
-replace="0.0.0.0"
-
 # changing bind address to 127.0.0.1 to 0.0.0.0
+file="/etc/mongod.conf"
+search="127.0.0.1"
+replace="0.0.0.0"
 sed -i "s/$search/$replace/g" "$file"
 else
   # OS version not supported
