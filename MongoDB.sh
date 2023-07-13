@@ -1,6 +1,16 @@
 #!/bin/bash
 #This script helps us to configure the mongodb and configure other propertiesz
 # setup the monodb repo file
+# Install  redhat-lsb-core package
+sudo yum install redhat-lsb-core -y
+# Get the operating system version
+os_version=$(lsb_release -d)
+
+# Check if the OS version contains a specific pattern
+if [[ $os_version == *"8"* ]]; then
+  # Run the command for Centos 8
+  echo "Running command for Centos 8"
+
 cat > /etc/yum.repos.d/mongo.repo <<- "EOF"
 [mongodb-org-4.2]
 name=MongoDB Repository
@@ -25,3 +35,7 @@ replace="0.0.0.0"
 
 # changing bind address to 127.0.0.1 to 0.0.0.0
 sed -i "s/$search/$replace/g" "$file"
+else
+  # OS version not supported
+  echo "Unsupported operating system version: $os_version"
+fi
