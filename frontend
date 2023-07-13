@@ -38,6 +38,7 @@ if [[ $os_version == *"8"* ]]; then
         }
 
 EOF
+#nginx service status check
 systemctl status nginx
 else
   # OS version not supported
