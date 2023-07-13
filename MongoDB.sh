@@ -2,12 +2,13 @@
 #This script helps us to configure the mongodb and configure other propertiesz
 # setup the monodb repo file
 cat > /etc/yum.repos.d/mongo.repo <<- "EOF"
-        [mongodb-org-4.2]
-        name=MongoDB Repository
-        baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/x86_64/
-        gpgcheck=0
-        enabled=1
+[mongodb-org-4.2]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/x86_64/
+gpgcheck=0
+enabled=1
 EOF
+yum update
 # Installing the MonoDB
 yum install mongodb-org -y
 # Start & Enable MongoDB Service
