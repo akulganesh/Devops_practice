@@ -16,7 +16,6 @@ if [[ $os_version == *"8"* ]]; then
   systemctl start nginx
   rm -rf /usr/share/nginx/html/*
   curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend.zip
-  cd /usr/share/nginx/html
   unzip /tmp/frontend.zip
 # creating file roboshop.conf file and inject file context inline command using cat
   cat > /etc/nginx/default.d/roboshop.conf <<- "EOF"
@@ -36,7 +35,6 @@ if [[ $os_version == *"8"* ]]; then
           stub_status on;
           access_log off;
         }
-
 EOF
 #nginx service status check
 systemctl status nginx
