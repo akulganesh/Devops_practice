@@ -21,7 +21,7 @@ variable "instance_names" {
      tags = {
        Name = var.instance_names[count.index]
      }
-
+#currently this phase not working properly need to tune
      provisioner "local-exec" {
        command = <<EOT
       aws route53 change-resource-record-sets --hosted-zone-id Z05621022OUI0T8QXYBUU --change-batch '
