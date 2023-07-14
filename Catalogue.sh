@@ -30,7 +30,7 @@ Description = Catalogue Service
 [Service]
 User=roboshop
 Environment=MONGO=true
-Environment=MONGO_URL="mongodb://<MONGODB-SERVER-IPADDRESS>:27017/catalogue"
+Environment=MONGO_URL="mongodb://monogodb.agnyaata.online:27017/catalogue"
 ExecStart=/bin/node /app/server.js
 SyslogIdentifier=catalogue
 
@@ -53,10 +53,8 @@ EOF
 yum update
 yum install mongodb-org-shell -y
 #Load Schema
-#mongo --host MONGODB-SERVER-IPADDRESS </app/schema/catalogue.js" this need to be implement hostname addresses.
+mongo --host monogodb.agnyaata.online </app/schema/catalogue.js
 else
   # OS version not supported
   echo "Unsupported operating system version: $os_version"
 fi
-
-
