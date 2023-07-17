@@ -1,0 +1,35 @@
+FROM node:alpine3.15
+ARG HUBOT_SLACK_TOKEN
+ARG HUBOT_NAME='hubot'
+ARG USR='hubot'
+ARG UID=2000
+ARG GID=2000
+ARG HUBOT_VERSION="3.3.2"
+ENV HUBOT_SLACK_TOKEN=$HUBOT_SLACK_TOKEN
+ENV EXPRESS_PORT=$EXPRESS_PORT
+ENV HUBOT_NAME=$HUBOT_NAME
+ENV USR=$USR
+ENV UID=$UID
+ENV GID=$GID
+RUN apk add --no-cache --update jq \
+     && npm install -g css-what css-select minimatch npm \
+     && npm install -g yo generator-hubot \
+     && rm -rf /var/cache/apk/* \
+     && addgroup -S $USR \
+     && adduser -S $USR -G $USR -h "$HUBOT_NAME" -D
+USER $USR
+WORKDIR "/home/$HUBOT_NAME"
+COPY entrypoint.sh ./
+RUN yo hubot --name="$HUBOT_NAME" \
+     --description="$HUBOT_NAME" \
+     --owner="$HUBOT_NAME" \
+     --adapter="slack" \
+     --defaults \
+     && jq --arg HUBOT_VERSION "$HUBOT_VERSION" '.dependencies.hubot = $HUBOT_VERSION' package.json > /tmp/package.json \
+     && mv /tmp/package.json .
+COPY scripts scripts
+USER root
+RUN chown -R hubot:hubot scripts && apk add --no-cache curl
+USER $USR
+ENTRYPOINT ["./entrypoint.sh"]
+CMD ["--name", "$HUBOT_NAME", "--adapter", "slack"]
